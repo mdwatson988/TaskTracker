@@ -1,5 +1,5 @@
 # ToDoList
-Python Flask web to manage user specific to-do lists for organizations
+Python Flask web app to manage user specific to-do lists for organizations
 
 
 Any site visitor can create user account.
