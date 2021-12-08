@@ -39,21 +39,21 @@ class OrganizationUser(db.Model):
     __tablename__ = 'organization_users'
     id = db.Column(db.Integer(), primary_key=True)
     organizationAdmin = db.Column(db.Boolean(), default=False, nullable=False, index=True)
-    organizationId = db.Column(db.Integer(), db.ForeignKey('organizations.id'))
-    userId = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    organizationId = db.Column(db.Integer(), db.ForeignKey('organizations.id'), index=True)
+    userId = db.Column(db.Integer(), db.ForeignKey('users.id'), index=True)
 
 class Task(db.Model):
     __tablename__ = 'tasks'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(45), index=True, nullable=False)
     taskComplete = db.Column(db.Boolean(), default=False, nullable=False, index=True)
-    organizationId = db.Column(db.Integer(), db.Foreign_Key('organizations.id'), nullable=False, index=True)
-    userId = db.Column(db.Integer(), db.Foreign_Key('users.id'), nullable=False, index=True)
-    tasksInfo = db.relationship('TaskInfo', backref='task', lazy='dynamic', cascade='all, delete-orphan')
+    organizationId = db.Column(db.Integer(), db.ForeignKey('organizations.id'), nullable=False, index=True)
+    assignedToUserId = db.Column(db.Integer(), db.ForeignKey('users.id'), index=True)
+    tasksInfo = db.relationship('TaskDetail', backref='task', lazy='dynamic', cascade='all, delete-orphan')
 
-class TaskInfo(db.Model):
-    __tablename__ = 'task_info'
-    taskId = db.Column(db.Integer(), db.Foreign_Key('tasks.id'), primary_key=True)
+class TaskDetail(db.Model):
+    __tablename__ = 'task_detail'
+    taskId = db.Column(db.Integer(), db.ForeignKey('tasks.id'), primary_key=True, index=True)
     createdByUserId = db.Column(db.Integer(), nullable=False, index=True)
     assignedByUserId = db.Column(db.Integer(), index=True)
     dateComplete = db.Column(db.DateTime(), index=True)

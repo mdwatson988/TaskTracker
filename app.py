@@ -4,10 +4,9 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 
-#set URI for database, enable CSRF for Flask forms
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ToDoList_db.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ToDoList_db.db' #set URI for database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #improve db efficiency
-app.config['SECRET_KEY'] = 'ThisShouldBeHarderToGuess'
+app.config['SECRET_KEY'] = 'ThisShouldBeHarderToGuess' #enable CSRF for Flask forms
 
 db = SQLAlchemy(app) #instantiate db
 
@@ -16,3 +15,4 @@ loginManager = LoginManager()
 loginManager.init_app(app)
 loginManager.login_view = 'login'
 
+import models
