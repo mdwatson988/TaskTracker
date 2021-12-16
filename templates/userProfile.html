@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h1>{{ user.username }}'s User Profile</h1><hr>
+
+                    <p>
+                        Name: {{ user.nameFirst }} {{ user.nameLast }}<br>
+                        Email: {{ user.email }}
+                    </p>
+
+                    {% if user.about %}
+                        <h3>About {{ user.username }}:</h3>
+                            <p>{{ user.about }}</p>
+                    {% endif %}
+
+                    {% if form %}<!--form only exists for users viewing their own profile-->
+                        <form action="", method="post">
+                            {{ form.hidden_tag() }}<!--CSRF-->
+                            <p>
+                                You may update your About section here:<br>
+                                {{ form.about(rows='5', cols='50') }}<br>
+                            </p>
+
+                            <p>
+                                {{ form.submit() }}<br>
+                            </p>
+                        </form>
+                    {% endif %}
+
+                    <h3>{{ user.username }}'s organization membership</h3>
+                        {% if userOrganizations %} <!--this isn't working-->
+                            <ul>
+                                {% for org in userOrganizations %}
+                                    <li><a href="{{ url_for('organizationProfile', name = org.name) }}">{{ org.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>{{ user.username }} is not yet a member of any organizations.</p>
+                        {% endif %}
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

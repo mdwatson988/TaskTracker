@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h1>Browse Registered Users</h1><hr>
+                    {% for user in users %}
+                        <ul>
+                            <li><a href="{{ url_for('userProfile', username=user.username) }}">{{ user.username }}</a></li>
+                        </ul>
+                    {% endfor %}
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

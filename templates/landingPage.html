@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h2>Welcome to your organization's online task tracker!</h2>
+                    <p>New user? <a href="{{ url_for('userRegistration') }}">Click here to Register</a></p>
+
+                <hr>
+
+                <h3>Want to make sure your organization is registered? Check below:</h3>
+                    {% if organizations %}
+                        {% for organization in organizations %} 
+                            <ul>
+                                <li><a href="{{ url_for('organizationProfile', name = organization.name) }}">{{ organization.name }}</a></li>
+                            </ul>
+                        {% endfor %}
+                    {% else %}
+                        <p>Sorry, no organizations have been created yet. Register your organization below!</p>
+                    {% endif %}
+
+                <hr>
+
+                <p>Need to register your organization? <a href="{{ url_for('organizationRegistration') }}">Click here</a></p>
+            </div> 
+        </div>
+    </main>
+
+{% endblock %}

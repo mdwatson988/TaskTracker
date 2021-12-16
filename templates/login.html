@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h2>Sign in to TaskTracker</h2>
+                    <p>New user? <a href="{{ url_for('userRegistration') }}">Click here to Register</a></p><br>
+                    <form action="", method="post">
+                        {{ form.hidden_tag() }}<!--CSRF protection-->
+
+                        <p>
+                            {{ form.username.label }}<br>
+                            {{ form.username(size=45) }}<br>
+                            {% for error in form.username.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+
+                        <p>
+                            {{ form.password.label }}<br>
+                            {{ form.password(size=45) }}<br>
+                            {% for error in form.password.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+                        
+                        <p>{{ form.rememberMe() }} {{ form.rememberMe.label }}</p>
+                        <p>{{ form.submit() }}</p>
+                    </form>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

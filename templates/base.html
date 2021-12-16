@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!-- Template by html.am -->
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+        <!-- individual page titles can be passed in route.py -->
+		{% if title %}
+            <title>{{ title }}</title>
+        {% else %}
+            <title>TaskTracker</title>
+        {% endif %}
+
+		<style type="text/css">
+		
+			body {
+				margin:0;
+				padding:0;
+				font-family: Sans-Serif;
+				line-height: 1.5em;
+			}
+			
+			#header {
+				background: rgb(104, 180, 206);
+				height: 100px;
+			}
+			
+			#header h1 {
+				margin: 0;
+				padding-top: 15px;
+			}
+			
+			main {
+				padding-bottom: 10010px;
+				margin-bottom: -10000px;
+				float: left;
+				width: 100%;
+			}
+			
+			#nav {
+				padding-bottom: 10010px;
+				margin-bottom: -10000px;
+				float: left;
+				width: 230px;
+				margin-left: -100%;
+				background: rgb(163, 204, 221);
+			}
+			
+			#footer {
+
+				clear: left;
+				width: 100%;
+				background: rgb(104, 180, 206);
+				text-align: center;
+				padding: 4px 0;
+			}
+	
+			#wrapper {
+				overflow: hidden;
+			}
+						
+			#content {
+				margin-left: 230px; /* Same as 'nav' width */
+			}
+			
+			.innertube {
+				margin: 15px; /* Padding for content */
+				margin-top: 0;
+			}
+		
+			p {
+				color: #555;
+			}
+	
+			nav ul {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+			
+			nav ul a {
+				color: darkgreen;
+				text-decoration: none;
+			}
+
+			#flash p {
+				color: blue;
+				text-align: center;
+			}
+		
+		</style>
+	
+	</head>
+	
+	<body>
+
+		<div id="flash"> <!-- display flashed messages i.e. login successful -->
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					{% for message in messages %}
+						<p><b>{{ message }}</b></p>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+
+		<header id="header">
+			<div class="innertube">
+				<h1>TaskTracker</h1>
+					{% if not current_user.is_authenticated %}
+					<p><a href="{{ url_for('login') }}">Login</a></p>
+					{% else %}
+					<p><a href="{{ url_for('logout') }}">Logout</a></p>
+					{% endif %}
+			</div>
+		</header>
+
+		<div id="wrapper">
+
+        {% block content %} <!-- Jinja templates including header and body here -->
+        {% endblock %}
+        
+            <nav id="nav">
+				<div class="innertube">
+					<h3>Tasks</h3>
+					<ul>
+						<li><a href="#">Link 1</a></li>
+						<li><a href="#">Link 2</a></li>
+						<li><a href="#">Link 3</a></li>
+					</ul>
+					<h3>Users</h3>
+					<ul> <!-- add page links to left nav bar as I go-->
+						<li><a href="{{ url_for('userRegistration') }}">User Registration</a></li>
+						<li><a href="{{ url_for('userBrowse') }}">Browse Users</a></li>
+						{% if current_user.is_authenticated %}
+						<li><a href="{{ url_for('userProfile', username=current_user.username) }}">View Your Profile</a></li>
+						{% endif %}
+					</ul>
+					<h3>Organizations</h3>
+					<ul>
+						<li><a href="#">Link 1</a></li>
+						<li><a href="#">Link 2</a></li>
+						<li><a href="#">Link 3</a></li>
+					</ul>
+				</div>
+			</nav>
+		
+		</div>
+		
+		<footer id="footer">
+			<div class="innertube">
+				<h4>Project site created by Michael Watson</h4> 
+					<!-- open linkedin and github links in new window -->
+                    <a href="https://www.linkedin.com/in/mdwatson988/" target="_blank" rel="noopener noreferrer">LinkedIn</a><br>
+                    <a href="https://github.com/mdwatson988" target="_blank" rel="noopener noreferrer">GitHub</a>
+			</div>
+		</footer>
+	</body>
+</html>

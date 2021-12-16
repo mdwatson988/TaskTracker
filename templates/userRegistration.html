@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h2>TaskTracker Registration Form</h2>
+                    <form action="", method="post">
+                        {{ form.hidden_tag() }} <!--CSRF-->
+
+                        <p>
+                            {{ form.username.label }}<br>
+                            {{ form.username(size=45) }}<br>
+                            {% for error in form.username.errors %}
+                                <span style="color: red;">{{ error }}</span> <!--inform user of username ValidationError-->
+                            {% endfor %}
+                        </p>
+
+                        <p>
+                            {{ form.password.label }}<br>
+                            {{ form.password(size=45) }}<br>
+                            {% for error in form.password.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+
+                        <p>
+                            {{ form.password2.label }}<br>
+                            {{ form.password2(size=45) }}<br>
+                            {% for error in form.password2.errors %} <!--inform user passwords don't match-->
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+
+                        <p>
+                            {{ form.nameFirst.label }}<br>
+                            {{ form.nameFirst(size=45) }}<br>
+                            {% for error in form.nameFirst.errors %} <!--inform user of email ValidationError-->
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+
+                        <p>
+                            {{ form.nameLast.label }}<br>
+                            {{ form.nameLast(size=45) }}<br>
+                            {% for error in form.nameLast.errors %} <!--inform user of email ValidationError-->
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+
+                        <p>
+                            {{ form.email.label }}<br>
+                            {{ form.email(size=45) }}<br>
+                            {% for error in form.email.errors %} <!--inform user of email ValidationError-->
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+
+                        <p>
+                            {{ form.about.label }}<br>
+                            {{ form.about(rows='5', cols='50') }}<br>
+                        </p>
+
+                        <p>
+                            {{ form.submit() }}<br>
+                        </p>
+                    </form>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}
