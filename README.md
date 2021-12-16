@@ -14,4 +14,4 @@ Organization admins can assign any organization task to users within the organiz
 Users may see detailed task info for any task they've been assigned.
 Organization admins can see detailed task info for any tasks within the organization.
 
-![image](https://user-images.githubusercontent.com/72046035/146062712-6714f325-b9c5-4e97-8c28-96a11bd1096b.png)
+![image](https://user-images.githubusercontent.com/72046035/146285601-a82decf4-2556-45a4-be8d-73b0a9e554ff.png)
