@@ -2,6 +2,59 @@
 
 {% block content %}
 
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h1>{{ org.name }}'s TaskTracker Profile</h1><hr>
 
+                    {% if current_user.is_authenticated %} <!-- Join and Leave org links for registered users -->
+                        <p style="text-align: left;">
+                            {% if not current_member %}
+                                <a href="{{ url_for('organizationJoin', name = org.name) }}">Join {{ org.name }}</a>
+                            {% else %}
+                                <a href="{{ url_for('organizationLeave', name = org.name) }}">Leave {{ org.name }}</a>
+                            {% endif %}
+                        </p>
+                    {% endif %}
+
+                    <p>
+                        Address: {{ org.address }}
+                    </p>
+
+                    <p>
+                        Organization Contact: {{ contact.nameFirst }} {{ contact.nameLast }}
+                        Contact Email: {{ contact.email }}
+                    </p>
+
+                    {% if org.about %}
+                        <h3>About {{ org.name }}:</h3>
+                            <p>{{ org.about }}</p>
+                    {% endif %}
+
+                    {% if form %} <!--only org admin can update about section-->
+                        <form action="", method="post">
+                            {{ form.hidden_tag() }}
+                            <p>
+                                You may update your organization's About section here:<br>
+                                {{ form.about(rows='5', cols='50') }}<br>
+                            </p>
+
+                            <p>
+                                {{ form.submit() }}<br>
+                            </p>
+                        </form>
+                    {% endif %}
+                    
+                    {% if current_member and current_user.is_authenticated %}
+                        {% if is_admin %}
+                            <a href="{{ url_for('organizationMembers', name = org.name) }}">View Members and Make Admins</a>
+                        {% else %}
+                        <a href="{{ url_for('organizationMembers', name = org.name) }}">View Members</a>
+                        {% endif %}
+                    {% endif %}
+                    
+            </div>
+        </div>
+    </main>
 
 {% endblock %}

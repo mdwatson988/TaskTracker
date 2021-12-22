@@ -13,12 +13,11 @@ class User(db.Model, UserMixin):
     nameLast = db.Column(db.String(45), index=True, nullable=False)
     email = db.Column(db.String(45), index=True, unique=True, nullable=False)
     about = db.Column(db.Text(255), index=True)
-    organizationAdmin = db.Column(db.PickleType(), index=True)
-    organizations = db.relationship('Organization', secondary='organization_user_junction', back_populates='users', lazy='dynamic') #set relationship to junction table foreign key
+    organizations = db.relationship('Organization', secondary='organization_user_junction', back_populates='users', lazy='dynamic', cascade='all') #set relationship to junction table foreign key
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
 
     def __repr__(self):
-        return f"<User> {self.username}"
+        return f"User object for {self.username}"
 
     # User class functions to manage password hashing
     def set_pw_hash(self, password):
@@ -36,21 +35,23 @@ class Organization(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(45), index=True, unique=True, nullable=False)
     about = db.Column(db.Text(255), index=True)
+    address = db.Column(db.Text(255), index=True, nullable=False)
     contactUserId = db.Column(db.Integer(), index=True, nullable=False)
-    users = db.relationship('User', secondary='organization_user_junction', back_populates='organizations', lazy='dynamic') #set relationship to junction table
+    users = db.relationship('User', secondary='organization_user_junction', back_populates='organizations', lazy='dynamic', cascade='all') #set relationship to junction table
     tasks = db.relationship('Task', backref='organization', lazy='dynamic', cascade='all, delete-orphan')
 
     def __repr__(self):
-        return f"<Organization> {self.name}"
+        return f"Organization object for {self.name}"
 
 #junction table for user-organization many to many relationship
-class OrganizationUserJunction(db.Model):
+class Junction(db.Model):
     __tablename__ = 'organization_user_junction'
     organizationId = db.Column(db.Integer(), db.ForeignKey('organizations.id'), primary_key=True)
     userId = db.Column(db.Integer(), db.ForeignKey('users.id'), primary_key=True)
+    orgAdmin = db.Column(db.Boolean(), index=True, nullable=False, default=False)
 
     def __repr__(self):
-        return f"<Junction> user ID {self.userId}, org ID {self.organizationId}"
+        return f"Junction object for user ID {self.userId}, org ID {self.organizationId}"
 
 class Task(db.Model):
     __tablename__ = 'tasks'
@@ -62,7 +63,7 @@ class Task(db.Model):
     tasksInfo = db.relationship('TaskDetail', backref='task', lazy='dynamic', cascade='all, delete-orphan')
 
     def __repr__(self):
-        return f"<Task> {self.name}, task ID {self.id}"
+        return f"Task object for {self.name}, task ID {self.id}"
 
 class TaskDetail(db.Model):
     __tablename__ = 'task_detail'
@@ -73,4 +74,4 @@ class TaskDetail(db.Model):
     notes = db.Column(db.Text(255), index=True)
 
     def __repr__(self):
-        return f"<TaskDetail> task ID {self.taskId}"
+        return f"TaskDetail object for task ID {self.taskId}"

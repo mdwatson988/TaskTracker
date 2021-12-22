@@ -106,12 +106,14 @@
 
 		<header id="header">
 			<div class="innertube">
-				<h1>TaskTracker</h1>
-					{% if not current_user.is_authenticated %}
-					<p><a href="{{ url_for('login') }}">Login</a></p>
-					{% else %}
-					<p><a href="{{ url_for('logout') }}">Logout</a></p>
-					{% endif %}
+				<h1><a href="{{ url_for('landingPage') }}">TaskTracker</a></h1>
+					<p>
+						{% if not current_user.is_authenticated %}
+							<a href="{{ url_for('login') }}">Login</a>
+						{% else %}
+							<a href="{{ url_for('logout') }}">Logout</a>
+						{% endif %}
+					</p>
 			</div>
 		</header>
 
@@ -129,18 +131,21 @@
 						<li><a href="#">Link 3</a></li>
 					</ul>
 					<h3>Users</h3>
-					<ul> <!-- add page links to left nav bar as I go-->
-						<li><a href="{{ url_for('userRegistration') }}">User Registration</a></li>
+					<ul>
+						{% if not current_user.is_authenticated %}
+							<li><a href="{{ url_for('login') }}">Login</a></li>
+							<li><a href="{{ url_for('userRegistration') }}">New User Registration</a></li>
+						{% endif %}
 						<li><a href="{{ url_for('userBrowse') }}">Browse Users</a></li>
 						{% if current_user.is_authenticated %}
-						<li><a href="{{ url_for('userProfile', username=current_user.username) }}">View Your Profile</a></li>
+							<li><a href="{{ url_for('userProfile', username=current_user.username) }}">View Your Profile</a></li>
+							<li><a href="{{ url_for('logout') }}">Logout</a></li>
 						{% endif %}
 					</ul>
 					<h3>Organizations</h3>
 					<ul>
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li><a href="#">Link 3</a></li>
+						<li><a href="{{ url_for('organizationRegistration') }}">Organization Registration</a></li>
+						<li><a href="{{ url_for('organizationBrowse') }}">Browse Organizations</a></li>
 					</ul>
 				</div>
 			</nav>

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h1>Browse Registered Organizations</h1><hr>
+                <p>You may join any organization by clicking a link on the organization profile page.</p>
+                    {% for organization in organizations %}
+                        <ul>
+                            <li><a href="{{ url_for('organizationProfile', name=organization.name) }}">{{ organization.name }}</a></li>
+                        </ul>
+                    {% endfor %}
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

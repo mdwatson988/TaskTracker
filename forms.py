@@ -1,7 +1,8 @@
+from app import db
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, BooleanField, SelectField, SubmitField
+from wtforms import StringField, TextAreaField, IntegerField, PasswordField, BooleanField, SelectField, SubmitField
 from wtforms.validators import DataRequired, InputRequired, Email, EqualTo, ValidationError
-from models import User, Organization
+from models import Junction, User, Organization
 
 
 class UserRegistrationForm(FlaskForm):
@@ -15,25 +16,27 @@ class UserRegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
     #Ensure username and email using for registration are unique
-    def validate_username(self, username):
+    def validateUsername(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
             raise ValidationError('Username is already in use.')
         else:
             return True
 
-    def validate_email(self, email):
+    def validateEmail(self, email):
         email = User.query.filter_by(email=email.data).first()
         if email:
             raise ValidationError('Email address is already in use.')
         else:
             return True
+
 class OrganizationRegistrationForm(FlaskForm):
     name = StringField('Name', validators=[InputRequired()])
+    address = TextAreaField('Address')
     about = TextAreaField('About')
     submit = SubmitField('Create Organization')
 
-    def validate_name(self, name):
+    def validateName(self, name):
         name = Organization.query.filter_by(name=name.data).first()
         if name:
             raise ValidationError('Organization name is already in use.')
@@ -50,14 +53,20 @@ class LoginForm(FlaskForm):
     rememberMe = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-class OrganizationSelectionForm(FlaskForm): #This form will be used to select appropriate organization for joining, granting admin rights, creating tasks, assigning tasks, etc
-    choices = [(org.id, org.name) for org in Organization.query.all()]
-    organizationId = SelectField('Select Organization', coerce=int, choices=choices, validators=[DataRequired()])
+class OrganizationSelectionForm(FlaskForm): #This form will be used to select appropriate organization for creating and assigning tasks
+    organizationId = SelectField('Select Organization', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Select Organization')
 
 class GrantAdminForm(FlaskForm):
-    makeAdmin = BooleanField('Grant Admin')
-    submit = SubmitField('Grant Selected Users Organization Admin Rights')
+    newAdminUserId = IntegerField('New Admin User ID', validators=[DataRequired()])
+    submit = SubmitField('Grant Organization Admin Rights')
+
+    def checkUserId(self, org, newAdminUserId):
+        newAdminUserObject = db.session.query(User, Organization).filter(Junction.userId == User.id, Junction.organizationId == Organization.id).filter(Organization.id == org.id).filter(User.id == newAdminUserId).first()
+        if newAdminUserObject:
+            return True
+        else:
+            raise ValidationError('The provided User ID does not belong to a member of your organization.')
 
 class TaskCreationForm(FlaskForm):
     name = StringField('Task Name', validators=[InputRequired()])

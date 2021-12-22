@@ -5,7 +5,7 @@
     <main>
         <div id="content">
             <div class="innertube">
-                <h2>TaskTracker Registration Form</h2>
+                <h2>Register as a New User</h2><hr>
                     <form action="", method="post">
                         {{ form.hidden_tag() }} <!--CSRF-->
 
@@ -36,7 +36,7 @@
                         <p>
                             {{ form.nameFirst.label }}<br>
                             {{ form.nameFirst(size=45) }}<br>
-                            {% for error in form.nameFirst.errors %} <!--inform user of email ValidationError-->
+                            {% for error in form.nameFirst.errors %}
                                 <span style="color: red;">{{ error }}</span>
                             {% endfor %}
                         </p>
@@ -44,7 +44,7 @@
                         <p>
                             {{ form.nameLast.label }}<br>
                             {{ form.nameLast(size=45) }}<br>
-                            {% for error in form.nameLast.errors %} <!--inform user of email ValidationError-->
+                            {% for error in form.nameLast.errors %}
                                 <span style="color: red;">{{ error }}</span>
                             {% endfor %}
                         </p>
