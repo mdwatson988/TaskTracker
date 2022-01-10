@@ -17,4 +17,4 @@ Users may see detailed task info for any task they've created or been assigned.
 Organization admins can see detailed task info for any tasks within the organization.
 Organization admins can clear completed tasks from the organizaion task record.
 
-![image](https://user-images.githubusercontent.com/72046035/146285601-a82decf4-2556-45a4-be8d-73b0a9e554ff.png)
+![image](https://user-images.githubusercontent.com/72046035/147047395-f2ba9a33-60e0-4851-8b0d-fad7c397c176.png)
