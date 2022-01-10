@@ -2,6 +2,21 @@
 
 {% block content %}
 
-Hello Tasks
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h1>Your Pending Tasks</h1><hr>
+                    {% if tasks %}
+                        {% for task in tasks %}
+                            <ul>
+                                <li><a href="{{ url_for('taskDetails', taskId=task.id) }}">{{ task.name }}</a> | Organization: <a href="{{ url_for('organizationProfile', name=task.organization.name) }}">{{ task.organization.name }}</a></li>
+                            </ul>
+                        {% endfor %}
+                    {% else %}
+                        <p>You have no pending tasks.</p>
+                    {% endif %}
+            </div>
+        </div>
+    </main>
 
 {% endblock %}

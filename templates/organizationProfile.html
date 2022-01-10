@@ -22,8 +22,8 @@
                     </p>
 
                     <p>
-                        Organization Contact: {{ contact.nameFirst }} {{ contact.nameLast }}
-                        Contact Email: {{ contact.email }}
+                        Organization Contact: {{ contact.nameFirst }} {{ contact.nameLast }}<br>
+                        Contact Email: {{ contact.email }}<br>
                     </p>
 
                     {% if org.about %}
@@ -44,15 +44,18 @@
                             </p>
                         </form>
                     {% endif %}
-                    
+
                     {% if current_member and current_user.is_authenticated %}
-                        {% if is_admin %}
-                            <a href="{{ url_for('organizationMembers', name = org.name) }}">View Members and Make Admins</a>
-                        {% else %}
-                        <a href="{{ url_for('organizationMembers', name = org.name) }}">View Members</a>
-                        {% endif %}
-                    {% endif %}
-                    
+                        <p><a href="{{ url_for('organizationTasks', name = org.name) }}">View Tasks for {{ org.name }}</a></p>
+
+                        <p>
+                            {% if is_admin %}
+                                <a href="{{ url_for('organizationMembers', name = org.name) }}">View Members and Make Admins</a>
+                            {% else %}
+                                <a href="{{ url_for('organizationMembers', name = org.name) }}">View Members</a>
+                            {% endif %}
+                        </p>
+                    {% endif %}                
             </div>
         </div>
     </main>

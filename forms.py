@@ -53,10 +53,6 @@ class LoginForm(FlaskForm):
     rememberMe = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-class OrganizationSelectionForm(FlaskForm): #This form will be used to select appropriate organization for creating and assigning tasks
-    organizationId = SelectField('Select Organization', coerce=int, validators=[DataRequired()])
-    submit = SubmitField('Select Organization')
-
 class GrantAdminForm(FlaskForm):
     newAdminUserId = IntegerField('New Admin User ID', validators=[DataRequired()])
     submit = SubmitField('Grant Organization Admin Rights')
@@ -71,12 +67,22 @@ class GrantAdminForm(FlaskForm):
 class TaskCreationForm(FlaskForm):
     name = StringField('Task Name', validators=[InputRequired()])
     notes = TextAreaField('Task Notes')
+    organizationId = SelectField('Which organization needs this task completed?', coerce=int, validators=[DataRequired()])
+    assignToMe = BooleanField('Assign this task to my task list')
     submit = SubmitField('Create Task')
 
-class TaskSelectionForm(FlaskForm): #used to select task for user assignment
-    taskId = SelectField('Task', coerce=int, validators=[DataRequired()]) #need to add choices - appropriate tasks for user depending on creation/admin status
-    submit = SubmitField('Select Task')
+class OrganizationSelectionForm(FlaskForm): #This form will be used to select appropriate organization for assigning tasks
+    organizationId = SelectField('Select Organization', coerce=int, validators=[DataRequired()])
+    submit = SubmitField('Select Organization')
 
 class TaskAssignmentForm(FlaskForm):
-    userId = SelectField('Select User', coerce=int, validators=[DataRequired()]) #need to add choices - approrpiate users depending on creation/organization status
+    userId = SelectField('Select User', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Assign Task')
+
+class TaskCompletionForm(FlaskForm):
+    completed = BooleanField('Mark task as completed')
+    submit = SubmitField('Complete Task')
+
+class ClearCompletedTasksForm(FlaskForm):
+    clearTasks = BooleanField("Clear completed tasks from this organization's records")
+    submit = SubmitField('Clear Tasks')

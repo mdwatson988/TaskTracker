@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main>
+    <div id="content">
+        <div class="innertube">
+            <h1>{{ org.name }}'s Tasks</h1><hr>
+
+                {% if incompleteTasks %}
+                    <h3>Pending Tasks</h3>
+                        <p>Organization admins or task creator may assign tasks by navigating to the task details page below.</p>
+                        
+                        {% for task in incompleteTasks %}
+                            <ul>
+                                <!--create hyperlink to Task Details if org admin, task assigned to current user, or task created by current user-->
+                                {% if isAdmin or task.assignedToUserId == current_user.id or task.details.first().createdByUserId == current_user.id %}
+                                    <li><a href="{{url_for('taskDetails', taskId = task.id) }}">{{ task.name }}</a>
+                                    {% if task.assignedToUserId %} <!--hyperlink to profile of assigned user if user has been assigned-->
+                                        | Assigned to: <a href="{{url_for('userProfile', username=task.user.username) }}">{{ task.user.username }}</a></li>
+                                    {% else %}
+                                        | Currently Unassigned</li>
+                                    {% endif %}
+
+                                {% else %} <!--No link to task details-->
+                                    <li>{{ task.name }}
+                                    {% if task.assignedToUserId %} <!--hyperlink to profile of assigned user if user has been assigned-->
+                                        | Assigned to: <a href="{{url_for('userProfile', username=task.user.username) }}">{{ task.user.username }}</a></li>
+                                    {% else %}
+                                        | Currently Unassigned</li>
+                                    {% endif %}
+                                {% endif %}
+                            </ul>
+                        {% endfor %}
+
+                {% else %}
+                    <p>{{ org.name }} currently has no pending tasks.</p>
+                {% endif %}
+
+                {% if completeTasks %}
+                    <h3>Completed Tasks</h3>
+                        <ul>
+                            {% for task in completeTasks %}
+                                <!--create hyperlink to Task Details if org admin, the task is assigned to current user, or current user is task creator-->
+                                {% if isAdmin or task.assignedToUserId == current_user.id or task.details.first().createdByUserId == current_user.id %}
+                                    <li><a href="{{url_for('taskDetails', taskId = task.id) }}">{{ task.name }}</a></li>
+                                {% else %}
+                                    <li>{{ task.name }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                {% endif %}
+
+                {% if completeTasks and isAdmin %} <!--give org admins access to delete completed tasks from the DB-->
+                    <form action="", method="post">
+                        {{ form.hidden_tag() }}
+                        <p>{{ form.clearTasks() }} {{ form.clearTasks.label }}</p>
+                        <p>{{ form.submit() }}</p>
+                    </form>
+                {% endif %}
+        </div>
+    </div>
+</main>
+
+{% endblock %}

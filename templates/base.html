@@ -79,7 +79,7 @@
 			}
 			
 			nav ul a {
-				color: darkgreen;
+				color: rgb(1, 70, 1);
 				text-decoration: none;
 			}
 
@@ -125,28 +125,26 @@
             <nav id="nav">
 				<div class="innertube">
 					<h3>Tasks</h3>
-					<ul>
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li><a href="#">Link 3</a></li>
-					</ul>
+						<ul>
+							<li><a href="{{ url_for('tasks', username=current_user.username) }}">View Your Task List</a></li>
+							<li><a href="{{ url_for('taskCreation') }}">Create New Task</a></li>
+						</ul>
+
 					<h3>Users</h3>
-					<ul>
-						{% if not current_user.is_authenticated %}
-							<li><a href="{{ url_for('login') }}">Login</a></li>
-							<li><a href="{{ url_for('userRegistration') }}">New User Registration</a></li>
-						{% endif %}
-						<li><a href="{{ url_for('userBrowse') }}">Browse Users</a></li>
-						{% if current_user.is_authenticated %}
+						<ul>
+							{% if not current_user.is_authenticated %}
+								<li><a href="{{ url_for('userRegistration') }}">New User Registration</a></li>
+							{% endif %}
+							<li><a href="{{ url_for('userBrowse') }}">Browse Users</a></li>
 							<li><a href="{{ url_for('userProfile', username=current_user.username) }}">View Your Profile</a></li>
-							<li><a href="{{ url_for('logout') }}">Logout</a></li>
-						{% endif %}
-					</ul>
+							<li><a href="{{ url_for('userOrganizations', username=current_user.username) }}">View Your Organizations</a></li>
+						</ul>
+
 					<h3>Organizations</h3>
-					<ul>
-						<li><a href="{{ url_for('organizationRegistration') }}">Organization Registration</a></li>
-						<li><a href="{{ url_for('organizationBrowse') }}">Browse Organizations</a></li>
-					</ul>
+						<ul>
+							<li><a href="{{ url_for('organizationBrowse') }}">Browse Organizations</a></li>
+							<li><a href="{{ url_for('organizationRegistration') }}">Register New Organization</a></li>
+						</ul>
 				</div>
 			</nav>
 		

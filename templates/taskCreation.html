@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h1>Create a New Task</h1><hr>
+                    <form action="", method="post">
+                        {{ form.hidden_tag() }}
+
+                        <p>
+                            {{ form.name.label }}<br>
+                            {{ form.name(size=45) }}<br>
+                            {% for error in form.name.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </p>
+
+                        <p>
+                            {{ form.organizationId.label }}<br>
+                            {{ form.organizationId() }}<br>
+                        </p>
+
+                        <p>
+                            {{ form.notes.label }}<br>
+                            {{ form.notes(rows='5', cols='50') }}<br>
+                        </p>
+
+                        <p>{{ form.assignToMe() }} {{ form.assignToMe.label }}</p>
+                        
+                        <p>{{ form.submit() }}</p>
+                    </form>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h1>Your TaskTracker Organization Memberships</h1><hr>
+                    {% if userOrganizations %}
+                        {% for org in userOrganizations %}
+                            <ul>
+                                <li><a href="{{ url_for('organizationProfile', name=org.name) }}">{{ org.name }}</a></li>
+                            </ul>
+                        {% endfor %}
+                        
+                    {% else %}
+                            <p>
+                                You are not yet a member of any organizations. 
+                                <a href="{{ url_for('organizationBrowse') }}">Join an existing organization</a> or 
+                                <a href="{{ url_for('organizationRegistration') }}">create a new one.</a>
+                            </p>
+                    {% endif %}
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

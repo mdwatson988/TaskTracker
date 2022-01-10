@@ -60,7 +60,7 @@ class Task(db.Model):
     taskComplete = db.Column(db.Boolean(), default=False, nullable=False, index=True)
     organizationId = db.Column(db.Integer(), db.ForeignKey('organizations.id'), nullable=False, index=True)
     assignedToUserId = db.Column(db.Integer(), db.ForeignKey('users.id'), index=True)
-    tasksInfo = db.relationship('TaskDetail', backref='task', lazy='dynamic', cascade='all, delete-orphan')
+    details = db.relationship('TaskDetail', backref='task', lazy='dynamic', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f"Task object for {self.name}, task ID {self.id}"

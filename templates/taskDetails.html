@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main>
+        <div id="content">
+            <div class="innertube">
+                <h1>{{ task.name }} Details</h1><hr>
+
+                    {% if details.notes %}
+                        <p>
+                            <h3>Task Notes:</h3>
+                            {{ details.notes }}
+                        </p><br>
+                    {% endif %}
+
+                    {% if assignedTo %}
+                        <p>Assigned To: <a href="{{ url_for('userProfile', username=assignedTo.username) }}">{{ assignedTo.username }}</a></p>
+                    {% endif %}
+
+                    <p>Created By: <a href="{{ url_for('userProfile', username=taskCreator.username) }}">{{ taskCreator.username }}</a></p>
+
+                    {% if taskAssignor %}
+                        <p>Assigned By: <a href="{{ url_for('userProfile', username=taskAssignor.username) }}">{{ taskAssignor.username }}</a></p>
+                    
+                    {% else %}
+                        <p>
+                            Task is currently unassigned. You may assign it here.<br>
+                            <form action="", method="post">
+                                {{ assignmentForm.hidden_tag() }}
+                                {{ assignmentForm.userId.label }}<br>
+                                {{ assignmentForm.userId() }}<br>
+                                {{ assignmentForm.submit() }}<br>
+                            </form>
+                        </p>
+                    {% endif %}
+
+                    {% if task.taskComplete %}
+                        <p>Date Complete: {{ details.dateComplete.month }}/{{ details.dateComplete.day }}/{{ details.dateComplete.year }}</p>
+                        <p>Time Complete: {{ details.dateComplete.hour }}:{{ details.dateComplete.minute }}</p>
+                    
+                    {% else %}
+                        {% if task.assignedToUserId == current_user.id %} <!--allow assigned user to mark task complete-->
+                            <form action="", method="post">
+                                {{ completionForm.hidden_tag() }}
+                                <p>{{ completionForm.completed() }} {{ completionForm.completed.label }}</p>
+                                <p>{{ completionForm.submit() }}</p>
+                            </form>
+                        
+                        {% else %}
+                            <p>Task is currently incomplete.</p>
+                        {% endif %}
+                    {% endif %}
+            </div>
+        </div>
+    </main>
+
+{% endblock %}
