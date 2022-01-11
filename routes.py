@@ -118,7 +118,7 @@ def userBrowse():
 def organizationRegistration():
     form = OrganizationRegistrationForm()
     if form.validate_on_submit():
-        if form.validateName(form.name.data): # ensure org name is unique
+        if form.validateName(form.name): # ensure org name is unique
             org = Organization(name=form.name.data, about=form.about.data, address=form.address.data, contactUserId=current_user.id) # set organization contact as org creator
             db.session.add(org)
             db.session.commit() # commit org so org.id can be used in following processes

@@ -15,4 +15,8 @@ loginManager = LoginManager()
 loginManager.init_app(app)
 loginManager.login_view = 'login'
 
-import routes, models
+from routes import *
+from models import *
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)
