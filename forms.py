@@ -17,16 +17,16 @@ class UserRegistrationForm(FlaskForm):
 
     #Ensure username and email using for registration are unique
     def validateUsername(self, username):
-        user = User.query.filter_by(username=username.data).first()
+        user = User.query.filter_by(username=username).first()
         if user:
-            raise ValidationError('Username is already in use.')
+            raise ValidationError()
         else:
             return True
 
     def validateEmail(self, email):
-        email = User.query.filter_by(email=email.data).first()
+        email = User.query.filter_by(email=email).first()
         if email:
-            raise ValidationError('Email address is already in use.')
+            raise ValidationError()
         else:
             return True
 
@@ -37,9 +37,9 @@ class OrganizationRegistrationForm(FlaskForm):
     submit = SubmitField('Create Organization')
 
     def validateName(self, name):
-        name = Organization.query.filter_by(name=name.data).first()
+        name = Organization.query.filter_by(name=name).first()
         if name:
-            raise ValidationError('Organization name is already in use.')
+            raise ValidationError()
         else:
             return True
 
@@ -62,7 +62,7 @@ class GrantAdminForm(FlaskForm):
         if newAdminUserObject:
             return True
         else:
-            raise ValidationError('The provided User ID does not belong to a member of your organization.')
+            raise ValidationError()
 
 class TaskCreationForm(FlaskForm):
     name = StringField('Task Name', validators=[InputRequired()])

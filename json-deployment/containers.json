@@ -1,0 +1,8 @@
+{
+    "flask": {
+        "image": ":task-tracker.task-tracker-container.1",
+        "ports": {
+            "5000": "HTTP"
+        }
+    }
+}

@@ -60,13 +60,20 @@ def userRegistration():
         return redirect(url_for('landingPage', _external=True, _scheme='HTTPS'))
     form = UserRegistrationForm()
     if form.validate_on_submit():
-        if form.validateUsername(form.username) and form.validateEmail(form.email): #ensure username and email are unique
-            user = User(username=form.username.data, nameFirst=form.nameFirst.data, nameLast=form.nameLast.data, email=form.email.data, about=form.about.data)
-            user.set_pw_hash(form.password.data)
-            db.session.add(user)
-            db.session.commit()
-            flash('Congratulations, you are now a registered user!')
-            return redirect(url_for('login', _external=True, _scheme='HTTPS'))
+        try:
+            if form.validateUsername(form.username.data): # ensure username is unique
+                try:
+                    if form.validateEmail(form.email.data): # ensure email is unique
+                        user = User(username=form.username.data, nameFirst=form.nameFirst.data, nameLast=form.nameLast.data, email=form.email.data, about=form.about.data)
+                        user.set_pw_hash(form.password.data)
+                        db.session.add(user)
+                        db.session.commit()
+                        flash('Congratulations, you are now a registered user!')
+                        return redirect(url_for('login', _external=True, _scheme='HTTPS'))
+                except ValidationError: # give appropriate error message if username or password is not unique
+                    form.email.errors.append('Email address is already in use.')
+        except ValidationError:
+            form.username.errors.append('Username is already in use.')
     return render_template('userRegistration.html', title='TaskTracker User Registration', form=form)
 
 @app.route('/users/profile/<username>', methods=['GET', 'POST'])
@@ -118,15 +125,18 @@ def userBrowse():
 def organizationRegistration():
     form = OrganizationRegistrationForm()
     if form.validate_on_submit():
-        if form.validateName(form.name): # ensure org name is unique
-            org = Organization(name=form.name.data, about=form.about.data, address=form.address.data, contactUserId=current_user.id) # set organization contact as org creator
-            db.session.add(org)
-            db.session.commit() # commit org so org.id can be used in following processes
-            junction = Junction(organizationId = org.id, userId = current_user.id, orgAdmin=True) # make org creator a member of org and give Admin rights
-            db.session.add(junction)
-            db.session.commit()
-            flash('Congratulations, your organization is now registered!')
-            return redirect(url_for('landingPage', _external=True, _scheme='HTTPS'))
+        try:
+            if form.validateName(form.name.data): # ensure org name is unique
+                org = Organization(name=form.name.data, about=form.about.data, address=form.address.data, contactUserId=current_user.id) # set organization contact as org creator
+                db.session.add(org)
+                db.session.commit() # commit org so org.id can be used in following processes
+                junction = Junction(organizationId = org.id, userId = current_user.id, orgAdmin=True) # make org creator a member of org and give Admin rights
+                db.session.add(junction)
+                db.session.commit()
+                flash('Congratulations, your organization is now registered!')
+                return redirect(url_for('landingPage', _external=True, _scheme='HTTPS'))
+        except ValidationError:
+            form.name.errors.append('Organization name is already in use.')
     return render_template('organizationRegistration.html', title='TaskTracker Organization Registration', form=form)
 
 @app.route('/organizations/browse')
@@ -183,8 +193,7 @@ def organizationMembers(name):
                     flash(f'{newAdmin.username} is now an Admin of {org.name}')
                     return redirect(url_for('organizationMembers', name=org.name, _external=True, _scheme="HTTPS"))
             except ValidationError:
-                flash('The provided User ID does not belong to a member of your organization')
-                return redirect(url_for('organizationMembers', name=org.name, _external=True, _scheme="HTTPS"))
+                form.newAdminUserId.errors.append('The provided User ID does not match any users in the organization.')
     return render_template('organizationMembers.html', title=f"{org.name}'s Member List", org=org, memberAdminList=memberAdminList, form=form)
 
 @app.route('/organizations/tasks/<name>', methods=['GET', 'POST'])

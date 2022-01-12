@@ -6,11 +6,15 @@
         <div id="content">
             <div class="innertube">
                 <h1>Browse Registered Users</h1><hr>
-                    {% for user in users %}
-                        <ul>
-                            <li><a href="{{ url_for('userProfile', username=user.username) }}">{{ user.username }}</a></li>
-                        </ul>
-                    {% endfor %}
+                    {% if users %}
+                        {% for user in users %}
+                            <ul>
+                                <li><a href="{{ url_for('userProfile', username=user.username) }}">{{ user.username }}</a></li>
+                            </ul>
+                        {% endfor %}
+                    {% else %}
+                            <p>No users have been created yet. <a href="{{ url_for('userRegistration') }}">Click here</a> to register a new user.</p>
+                    {% endif %}
             </div>
         </div>
     </main>
