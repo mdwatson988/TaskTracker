@@ -1,5 +1,5 @@
 # TaskTracker
-Python Flask web app to manage user specific to-do lists for organizations
+Python Flask web app to manage user specific to-do lists for multiple organizations
 
 www.tasktracker.mdwatson988.com
 
