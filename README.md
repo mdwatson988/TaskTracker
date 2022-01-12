@@ -1,7 +1,9 @@
 # TaskTracker
 Python Flask web app to manage user specific to-do lists for organizations
 
-IDE: VS Code, DB: SQLite, shell: PowerShell, Venv control: Miniconda, deployment: AWS/Docker
+www.tasktracker.mdwatson988.com
+
+IDE: VS Code, DB: SQLite, shell: PowerShell, Venv control: Miniconda, deployment: Docker/AWS Lightsail
 
 Any site visitor can create user account.
 Users create organizations. User who creates organization is automatically an organization admin.
